@@ -3,7 +3,6 @@ plugins {
 }
 
 repositories {
-	mavenLocal()
 	maven {
 		url = 'https://repo.runelite.net'
 		content {
@@ -11,10 +10,11 @@ repositories {
 		}
 	}
 	mavenCentral()
+	mavenLocal()
 }
 
 def runeLiteVersion = 'latest.release'
-def pluginMainClass = 'com.example.ExamplePluginTest'
+def pluginMainClass = 'com.banktweaks.BankTweaksPluginTest'
 
 dependencies {
 	compileOnly group: 'net.runelite', name:'client', version: runeLiteVersion
@@ -27,7 +27,7 @@ dependencies {
 	testImplementation group: 'net.runelite', name:'jshell', version: runeLiteVersion
 }
 
-group = 'com.example'
+group = 'com.banktweaks'
 version = '1.0-SNAPSHOT'
 
 tasks.withType(JavaCompile).configureEach {
@@ -39,7 +39,9 @@ tasks.register('run', JavaExec) {
 	classpath = sourceSets.test.runtimeClasspath
 	mainClass = pluginMainClass
 
-	jvmArgs "-ea"
+	jvmArgs "-ea",
+		"--add-opens", "java.desktop/com.apple.eawt=ALL-UNNAMED",
+		"--add-exports", "java.desktop/com.apple.eawt=ALL-UNNAMED"
 	args "--developer-mode", "--debug"
 }
 
